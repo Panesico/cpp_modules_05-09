@@ -63,13 +63,10 @@ int main()
         std::cout << "\033[34mConstructing\033[0m" << std::endl;
         Bureaucrat *a = new Bureaucrat(0);
 
-        if (a != NULL)
-        {
-            std::cout << std::endl;
+        std::cout << std::endl;
 
-            std::cout << "\033[34mDeconstructing b\033[0m" << std::endl;
-            delete a;
-        }
+        std::cout << "\033[34mDeconstructing b\033[0m" << std::endl;
+        delete a;
 
         std::cout << std::endl;
     }
@@ -82,12 +79,9 @@ int main()
 
         a = new Bureaucrat(151);
 
-        if (a != NULL)
-        {
-            std::cout << std::endl;
-            std::cout << "\033[34mDeconstructing b\033[0m" << std::endl;
-            delete a;
-        }
+        std::cout << std::endl;
+        std::cout << "\033[34mDeconstructing b\033[0m" << std::endl;
+        delete a;
         std::cout << std::endl;
     }
 }
