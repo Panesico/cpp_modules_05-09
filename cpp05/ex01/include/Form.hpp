@@ -27,8 +27,9 @@ public:
 	int	getGradeRequired() const;
 	int	getGrade() const;
 
-	void setGrade(int grade, int gradeRequired);
+	void setGrade();
 	void beSigned(Bureaucrat &b);
+	void signMe(Bureaucrat &b);
 
 	class GradeTooHighException : public std::exception
 	{

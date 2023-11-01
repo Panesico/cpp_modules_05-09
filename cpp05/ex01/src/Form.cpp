@@ -1,22 +1,22 @@
 #include "../include/Bureaucrat.hpp"
 
+void Form::signMe(Bureaucrat &b) {
+	_isSigned = 1;
+	std::cout << b.getName() << " signed " << getName() << std::endl;
+}
+
 void Form::beSigned(Bureaucrat &b) {
-	if (f.getGrade() >= f.getGradeRequired())
-		f.signMe();
+	if (b.getGrade() >= getGradeRequired())
+		signMe(b);
 	else
 		throw Form::GradeTooLowException();
 }
 
-void Form::setGrade(int grade, int gradeRequired) {
-	if (grade > 150 || gradeRequired > 150)
+void Form::setGrade() {
+	if (_grade > 150 || _gradeRequired > 150)
 		throw Form::GradeTooLowException();
-	else if (grade < 1 || gradeRequired < 1)
+	else if (_grade < 1 || _gradeRequired < 1)
 		throw Form::GradeTooHighException();
-	else
-	{
-		this->_grade = grade;
-		this->_gradeRequired = gradeRequired;
-	}
 }
 
 const char *Form::GradeTooHighException::what() const throw() {
@@ -27,11 +27,11 @@ const char *Form::GradeTooLowException::what() const throw() {
 	return ("Grade too Low");
 }
 
-Form::Form(int grade) : _name("Default")
+Form::Form(int grade) : _name("Default"), _grade(grade), _gradeRequired(42)
 {
 	try
 	{
-		setGrade(grade, 42);
+		setGrade();
 	}
 	catch (GradeTooHighException &e)
 	{
@@ -51,11 +51,11 @@ Form::Form() : _name("Default"), _grade(42), _gradeRequired(42)
 {
 	std::cout << "Form default contructor has been called" << std::endl;
 }
-Form::Form(std::string name, int grade) : _name(name)
+Form::Form(std::string name, int grade) : _name(name), _grade(grade), _gradeRequired(42)
 {
 	try
 	{
-		setGrade(grade, 42);
+		setGrade();
 	}
 	catch (GradeTooHighException &e)
 	{
@@ -71,11 +71,11 @@ Form::Form(std::string name, int grade) : _name(name)
 	}
 	std::cout << "Form default contructor has been called" << std::endl;
 }
-Form::Form(std::string name, int grade, int grade_required) : _name(name)
+Form::Form(std::string name, int grade, int grade_required) : _name(name), _grade(grade), _gradeRequired(grade_required)
 {
 	try
 	{
-		setGrade(grade, grade_required);
+		setGrade();
 	}
 	catch (GradeTooHighException &e)
 	{
@@ -91,11 +91,11 @@ Form::Form(std::string name, int grade, int grade_required) : _name(name)
 	}
 	std::cout << "Form default contructor has been called" << std::endl;
 }
-Form::Form(int grade, int grade_required) : _name("Default")
+Form::Form(int grade, int grade_required) : _name("Default"), _grade(grade), _gradeRequired(grade_required)
 {
 	try
 	{
-		setGrade(grade, grade_required);
+		setGrade();
 	}
 	catch (GradeTooHighException &e)
 	{
@@ -119,9 +119,11 @@ Form::Form(std::string name) : _name(name), _grade(42), _gradeRequired(42)
 {
 	std::cout << "Form name contructor has been called" << std::endl;
 }
-Form	&Form::operator=(const Bureaucrat &copy)
+Form	&Form::operator=(const Form &copy)
 {
-	std::cout << "Bureaucrat copy operator has been called" << std::endl;
+	std::cout << "Form copy operator has been called" << std::endl;
+	if (&copy == this)
+		return *this;
 	return *this;
 }
 
@@ -161,4 +163,9 @@ std::ostream	&operator<<(std::ostream &o, Form *a)
 	  "\nis " << a->getIsSigned() <<
 	  std::endl;
 	return (o);
+}
+
+Form::~Form()
+{
+	std::cout << "Form destructor has been called" << std::endl;
 }
