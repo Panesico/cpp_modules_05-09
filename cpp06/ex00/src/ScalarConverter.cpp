@@ -1,6 +1,5 @@
 #include "../include/ScalarConverter.hpp"
-#include <iostream>
-#include <sstream>
+
 
 ScalarConverter::ScalarConverter()
 {
@@ -78,21 +77,21 @@ void ScalarConverter::convert(std::string str) {
 			std::cout << "double: " << static_cast<double>(myChar) << std::endl;
 			break;
 		case ISINT:
-			int myInt = std::stoi(str);
+			int myInt = std::stoi(str.c_str());
 			std::cout << "char: " << "impossible" << std::endl;
 			std::cout << "int: " << myInt << std::endl;
 			std::cout << "float: " << static_cast<float>(myInt) << std::endl;
 			std::cout << "double: " << static_cast<double>(myInt) << std::endl;
 			break;
 		case ISFLOAT:
-			float myFloat = std::stof(str);
+			float myFloat = std::stof(str.c_str());
 			std::cout << "char: " << static_cast<char>(myFloat) << std::endl;
 			std::cout << "int: " << static_cast<int>(myFloat) << std::endl;
 			std::cout << "float: " << myFloat << std::endl;
 			std::cout << "double: " << static_cast<double>(myFloat) << std::endl;
 			break;
 		case ISDOUBLE:
-			double myDouble = std::stod(str);
+			double myDouble = std::stod(str.c_str());
 			std::cout << "char: " << static_cast<int>(myDouble) << std::endl;
 			std::cout << "int: " << static_cast<int>(myDouble) << std::endl;
 			std::cout << "float: " << static_cast<float>(myDouble) << std::endl;

@@ -1,5 +1,10 @@
 #pragma once
 #include <iostream>
+#include <iostream>
+#include <cstdlib>
+#include <sstream>
+#include <cmath>
+#include <limits>
 
 #define ISCHAR 1
 #define ISINT 2
