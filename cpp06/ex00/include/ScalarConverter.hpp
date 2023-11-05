@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <sstream>
-#include <cmath>
+#include <cfloat>
 #include <limits>
 
 #define ISCHAR 1
