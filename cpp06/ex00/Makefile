@@ -2,7 +2,7 @@ NAME		=	convert
 
 CXX			=	c++
 
-CXXFLAGS	=	-Wall -Werror -Wextra -std=c++98 -pedantic-errors
+CXXFLAGS	=	-Wall -Werror -Wextra -pedantic-errors
 
 #directories
 SRC_DIR					=	src/
