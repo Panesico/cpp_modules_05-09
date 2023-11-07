@@ -1,15 +1,7 @@
 #pragma once
 #include <iostream>
-#include <iostream>
-#include <cstdlib>
-#include <sstream>
-#include <cfloat>
+#include <iomanip>
 #include <limits>
-
-#define ISCHAR 1
-#define ISINT 2
-#define ISFLOAT 3
-#define ISDOUBLE 4
 
 class ScalarConverter
 {
@@ -21,10 +13,4 @@ public:
 	ScalarConverter &operator=(const ScalarConverter &src);
 
 	static void convert(std::string str);
-
-	class ErrorException : public std::exception
-	{
-	public:
-		virtual const char *what() const throw();
-	};
 };
