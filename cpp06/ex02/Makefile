@@ -1,4 +1,4 @@
-NAME		=	convert
+NAME		=	identify
 
 CXX			=	c++
 

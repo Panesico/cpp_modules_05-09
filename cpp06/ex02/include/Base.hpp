@@ -6,9 +6,6 @@
 
 class Base
 {
-protected:
-
 public:
 	virtual ~Base();
-	Base * generate(void);
 };
