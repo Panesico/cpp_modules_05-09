@@ -21,15 +21,16 @@ public:
 	AForm	&operator=(const AForm &copy);
 	virtual ~AForm();
 
-	virtual bool	getIsSignedBool() const;
-	virtual const std::string	getIsSigned() const;
-	virtual const std::string	getName() const;
-	virtual int	getGradeRequired() const;
-	virtual int	getGrade() const;
+	bool	getIsSignedBool() const;
+	const std::string	getIsSigned() const;
+	const std::string	getName() const;
+	int	getGradeRequired() const;
+	int	getGrade() const;
 
-	virtual void setGrade();
-	virtual void beSigned(Bureaucrat &b);
-	virtual void signMe(Bureaucrat &b);
+	void setGrade();
+	void beSigned(Bureaucrat &b);
+	void signMe(Bureaucrat &b);
+	virtual void execute(Bureaucrat const &executor)const = 0;
 
 	class GradeTooHighException : public std::exception
 	{

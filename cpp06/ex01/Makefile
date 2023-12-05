@@ -1,4 +1,4 @@
-NAME		=	convert
+NAME		=	Serialize
 
 CXX			=	c++
 

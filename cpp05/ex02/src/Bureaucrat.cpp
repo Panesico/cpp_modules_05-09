@@ -1,6 +1,6 @@
 #include "../include/Bureaucrat.hpp"
 
-void Bureaucrat::signForm(Form &f) {
+void Bureaucrat::signForm(AForm &f) {
 	if (!f.getIsSignedBool())
 	{
 		f.beSigned(*this);
@@ -9,6 +9,25 @@ void Bureaucrat::signForm(Form &f) {
 		std::cout << "Bureaucrat " << this->getName() << " couldn't sign form " << f.getName()
 		<< ". Reason: Form is already signed." << std::endl;
 }
+
+void	Bureaucrat::canExtecute(AForm &form) const {
+	if ((int)this->getGrade() > form.getGradeRequired())
+		throw (Bureaucrat::GradeTooLowException());
+}
+
+void	Bureaucrat::executeForm(AForm &form)const
+{
+	try
+	{
+		canExtecute(form);
+		form.execute(*this);
+	}
+	catch (GradeTooLowException &e)
+	{
+		std::cout << "Could not execute " << getName() << ": " << e.what() << std::endl;
+	}
+}
+
 
 void    Bureaucrat::incrementGrade() {
     try {

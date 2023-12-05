@@ -3,7 +3,9 @@
 void Bureaucrat::signForm(Form &f) {
 	if (!f.getIsSignedBool())
 	{
-		f.beSigned(*this);
+		try {
+			f.beSigned(*this);
+		} catch (std::exception &e) { std::cout << e.what() << std::endl;}
 	}
 	else
 		std::cout << "Bureaucrat " << this->getName() << " couldn't sign form " << f.getName()

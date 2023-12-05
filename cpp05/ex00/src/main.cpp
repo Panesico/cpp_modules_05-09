@@ -1,8 +1,14 @@
 #include <iostream>
 #include "../include/Bureaucrat.hpp"
 
+void ft_leaks()
+{
+	system("leaks -q Bureaucrat");
+}
+
 int main()
 {
+	atexit(ft_leaks);
     std::cout << "\033[32mTest 1\033[0m" << std::endl;
     {
         std::cout << "\033[34mConstructing\033[0m" << std::endl;

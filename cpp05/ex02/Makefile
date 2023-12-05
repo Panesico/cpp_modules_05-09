@@ -1,4 +1,4 @@
-NAME		=	Form
+NAME		=	Forms
 
 CXX			=	c++
 
@@ -22,7 +22,7 @@ UP			=	\033[A
 CUT			=	\033[K
 
 #source files
-SRC_FILES	=	Form.cpp Bureaucrat.cpp main.cpp
+SRC_FILES	=	ShrubberyCreationForm.cpp RobotomyRequestForm.cpp PresidentialPardonForm.cpp AForm.cpp Bureaucrat.cpp main.cpp
 
 OBJ_FILES	=	$(SRC_FILES:.cpp=.o)
 
@@ -32,24 +32,24 @@ OBJ			=	$(addprefix $(OBJ_DIR), $(OBJ_FILES))
 
 #all rule
 all: $(NAME)
-	#@printf "\n"
-	#@printf "$(GREEN)                  EEEEEEEEEEEEEEEEEEEEEE\n$(RESET)"
-	#@printf "$(GREEN)      <<<<<<<     E::::::::::::::::::::E                      >>>>>>>      \n$(RESET)"
-	#@printf "$(GREEN)     <:::::<      E::::::::::::::::::::E                       >:::::>     \n$(RESET)"
-	#@printf "$(GREEN)    <:::::<       EE::::::EEEEEEEEE::::E                        >:::::>    \n$(RESET)"
-	#@printf "$(GREEN)   <:::::<          E:::::E       EEEEEEzzzzzzzzzzzzzzzzz        >:::::>   \n$(RESET)"
-	#@printf "$(GREEN)  <:::::<           E:::::E             z:::::::::::::::z         >:::::>  \n$(RESET)"
-	#@printf "$(GREEN) <:::::<            E::::::EEEEEEEEEE   z::::::::::::::z           >:::::> \n$(RESET)"
-	#@printf "$(GREEN)<:::::<             E:::::::::::::::E   zzzzzzzz::::::z             >:::::>\n$(RESET)"
-	#@printf "$(GREEN) <:::::<            E:::::::::::::::E         z::::::z             >:::::> \n$(RESET)"
-	#@printf "$(GREEN)  <:::::<           E::::::EEEEEEEEEE        z::::::z             >:::::>  \n$(RESET)"
-	#@printf "$(GREEN)   <:::::<          E:::::E                 z::::::z             >:::::>   \n$(RESET)"
-	#@printf "$(GREEN)    <:::::<         E:::::E       EEEEEE   z::::::z             >:::::>    \n$(RESET)"
-	#@printf "$(GREEN)     <:::::<      EE::::::EEEEEEEE:::::E  z::::::zzzzzzzz      >:::::>     \n$(RESET)"
-	#@printf "$(GREEN)      <<<<<<<     E::::::::::::::::::::E z::::::::::::::z     >>>>>>>      \n$(RESET)"
-	#@printf "$(GREEN)                  E::::::::::::::::::::Ez:::::::::::::::z                  \n$(RESET)"
-	#@printf "$(GREEN)                  EEEEEEEEEEEEEEEEEEEEEEzzzzzzzzzzzzzzzzz                  \n$(RESET)"
-	#@printf "\n"
+	@printf "\n"
+	@printf "$(GREEN)                  EEEEEEEEEEEEEEEEEEEEEE\n$(RESET)"
+	@printf "$(GREEN)      <<<<<<<     E::::::::::::::::::::E                      >>>>>>>      \n$(RESET)"
+	@printf "$(GREEN)     <:::::<      E::::::::::::::::::::E                       >:::::>     \n$(RESET)"
+	@printf "$(GREEN)    <:::::<       EE::::::EEEEEEEEE::::E                        >:::::>    \n$(RESET)"
+	@printf "$(GREEN)   <:::::<          E:::::E       EEEEEEzzzzzzzzzzzzzzzzz        >:::::>   \n$(RESET)"
+	@printf "$(GREEN)  <:::::<           E:::::E             z:::::::::::::::z         >:::::>  \n$(RESET)"
+	@printf "$(GREEN) <:::::<            E::::::EEEEEEEEEE   z::::::::::::::z           >:::::> \n$(RESET)"
+	@printf "$(GREEN)<:::::<             E:::::::::::::::E   zzzzzzzz::::::z             >:::::>\n$(RESET)"
+	@printf "$(GREEN) <:::::<            E:::::::::::::::E         z::::::z             >:::::> \n$(RESET)"
+	@printf "$(GREEN)  <:::::<           E::::::EEEEEEEEEE        z::::::z             >:::::>  \n$(RESET)"
+	@printf "$(GREEN)   <:::::<          E:::::E                 z::::::z             >:::::>   \n$(RESET)"
+	@printf "$(GREEN)    <:::::<         E:::::E       EEEEEE   z::::::z             >:::::>    \n$(RESET)"
+	@printf "$(GREEN)     <:::::<      EE::::::EEEEEEEE:::::E  z::::::zzzzzzzz      >:::::>     \n$(RESET)"
+	@printf "$(GREEN)      <<<<<<<     E::::::::::::::::::::E z::::::::::::::z     >>>>>>>      \n$(RESET)"
+	@printf "$(GREEN)                  E::::::::::::::::::::Ez:::::::::::::::z                  \n$(RESET)"
+	@printf "$(GREEN)                  EEEEEEEEEEEEEEEEEEEEEEzzzzzzzzzzzzzzzzz                  \n$(RESET)"
+	@printf "\n"
 
 #compile the executable
 $(NAME): $(OBJ)

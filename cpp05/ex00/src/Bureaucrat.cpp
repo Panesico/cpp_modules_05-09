@@ -62,8 +62,10 @@ void Bureaucrat::setGrade(int grade) {
 
 Bureaucrat::Bureaucrat(int grade) : _name("Default")
 {
-    setGrade(grade);
-    std::cout << "Bureaucrat grade contructor has been called" << std::endl;
+	std::cout << "Bureaucrat grade contructor has been called" << std::endl;
+	try {
+		setGrade(grade);
+	} catch (std::exception &e) { std::cout << e.what() << std::endl;}
 }
 Bureaucrat::Bureaucrat() : _name("Default"), _grade(42)
 {
@@ -71,8 +73,10 @@ Bureaucrat::Bureaucrat() : _name("Default"), _grade(42)
 }
 Bureaucrat::Bureaucrat(std::string name, int grade) : _name(name)
 {
-    setGrade(grade);
-    std::cout << "Bureaucrat default contructor has been called" << std::endl;
+	std::cout << "Bureaucrat default contructor has been called" << std::endl;
+	try {
+		setGrade(grade);
+	} catch (std::exception &e) { std::cout << e.what() << std::endl;}
 }
 Bureaucrat::Bureaucrat(const Bureaucrat &bureaucrat) : _name(bureaucrat._name)
 {

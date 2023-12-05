@@ -6,7 +6,7 @@ void AForm::signMe(Bureaucrat &b) {
 }
 
 void AForm::beSigned(Bureaucrat &b) {
-	if (b.getGrade() >= getGradeRequired())
+	if (b.getGrade() <= getGradeRequired())
 		signMe(b);
 	else
 		throw AForm::GradeTooLowException();

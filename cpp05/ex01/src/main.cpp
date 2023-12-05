@@ -1,8 +1,14 @@
 #include "../include/Form.hpp"
 #include "../include/Bureaucrat.hpp"
 
+void ft_leaks()
+{
+	system("leaks -q Form");
+}
+
 int main(void)
 {
+	atexit(ft_leaks);
 	{
 		std::cout << "\033[34mConstructing\033[0m" << std::endl;
 		Bureaucrat *a = new Bureaucrat();
@@ -12,8 +18,9 @@ int main(void)
 		std::cout << "\033[34mTesting\033[0m" << std::endl;
 		std::cout << a;
 		std::cout << b;
-
-		b->beSigned(*a);
+		try {
+			b->beSigned(*a);
+		} catch (std::exception &e) { std::cout << e.what() << std::endl;}
 
 		std::cout << b;
 		std::cout << std::endl;
@@ -41,7 +48,9 @@ int main(void)
 		a->signForm(*c);
 
 		std::cout << c;
-		c->beSigned(*b);
+		try {
+			c->beSigned(*a);
+		} catch (std::exception &e) { std::cout << e.what() << std::endl;}
 
 		std::cout << c;
 

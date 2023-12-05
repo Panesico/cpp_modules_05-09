@@ -2,7 +2,7 @@
 
 #include <string>
 #include <iostream>
-#include "Form.hpp"
+#include "AForm.hpp"
 
 class Bureaucrat {
 private:
@@ -20,7 +20,9 @@ public:
     int         getGrade() const;
     std::string getName() const;
     void        setGrade(int grade);
-	void 		signForm(Form &f);
+	void 		signForm(AForm &f);
+	void		executeForm(AForm &form) const;
+	void		canExtecute(AForm &form) const;
 
     void    incrementGrade();
     void    decrementGrade();
