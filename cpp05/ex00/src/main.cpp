@@ -8,7 +8,7 @@ void ft_leaks()
 
 int main()
 {
-	atexit(ft_leaks);
+	//atexit(ft_leaks);
     std::cout << "\033[32mTest 1\033[0m" << std::endl;
     {
         std::cout << "\033[34mConstructing\033[0m" << std::endl;

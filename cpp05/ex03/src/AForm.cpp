@@ -32,7 +32,7 @@ const char *AForm::FormNotSignedException::what(void) const throw()
 	return ("Form needs to be signed before executing");
 };
 
-AForm::AForm(int grade) : _name("Default"), _grade(grade), _gradeRequired(42)
+AForm::AForm(int grade) : _name("Default"), _isSigned(0), _grade(grade), _gradeRequired(42)
 {
 	try
 	{
@@ -56,7 +56,7 @@ AForm::AForm() : _name("Default"), _grade(42), _gradeRequired(42)
 {
 	std::cout << "Form default contructor has been called" << std::endl;
 }
-AForm::AForm(std::string name, int grade) : _name(name), _grade(grade), _gradeRequired(42)
+AForm::AForm(std::string name, int grade) : _name(name), _isSigned(0), _grade(grade), _gradeRequired(42)
 {
 	try
 	{
@@ -76,7 +76,7 @@ AForm::AForm(std::string name, int grade) : _name(name), _grade(grade), _gradeRe
 	}
 	std::cout << "Form default contructor has been called" << std::endl;
 }
-AForm::AForm(std::string name, int grade, int grade_required) : _name(name), _grade(grade), _gradeRequired(grade_required)
+AForm::AForm(std::string name, int grade, int grade_required) : _name(name), _isSigned(0), _grade(grade), _gradeRequired(grade_required)
 {
 	try
 	{
@@ -96,7 +96,7 @@ AForm::AForm(std::string name, int grade, int grade_required) : _name(name), _gr
 	}
 	std::cout << "Form default contructor has been called" << std::endl;
 }
-AForm::AForm(int grade, int grade_required) : _name("Default"), _grade(grade), _gradeRequired(grade_required)
+AForm::AForm(int grade, int grade_required) : _name("Default"), _isSigned(0), _grade(grade), _gradeRequired(grade_required)
 {
 	try
 	{

@@ -27,7 +27,7 @@ const char *Form::GradeTooLowException::what() const throw() {
 	return ("Grade too Low");
 }
 
-Form::Form(int grade) : _name("Default"), _grade(grade), _gradeRequired(42)
+Form::Form(int grade) : _name("Default"), _grade(grade), _gradeRequired(42), _isSigned(0)
 {
 	try
 	{
@@ -47,31 +47,11 @@ Form::Form(int grade) : _name("Default"), _grade(grade), _gradeRequired(42)
 	}
 	std::cout << "Form grade contructor has been called" << std::endl;
 }
-Form::Form() : _name("Default"), _grade(42), _gradeRequired(42)
+Form::Form() : _name("Default"), _grade(42), _gradeRequired(42), _isSigned(0)
 {
 	std::cout << "Form default contructor has been called" << std::endl;
 }
-Form::Form(std::string name, int grade) : _name(name), _grade(grade), _gradeRequired(42)
-{
-	try
-	{
-		setGrade();
-	}
-	catch (GradeTooHighException &e)
-	{
-		std::cerr << "\033[31mCreating Bureaucrat " << getName() << " failed: " << e.what() << "\033[0m" << std::endl;
-	}
-	catch (GradeTooLowException &e)
-	{
-		std::cerr << "\033[31mCreating Bureaucrat " << getName() << " failed: " << e.what() << "\033[0m" << std::endl;
-	}
-	catch (...)
-	{
-		std::cerr << "\033[31mCreating Bureaucrat " << getName() << " failed: " << "Unkown exception" << "\033[0m" << std::endl;
-	}
-	std::cout << "Form default contructor has been called" << std::endl;
-}
-Form::Form(std::string name, int grade, int grade_required) : _name(name), _grade(grade), _gradeRequired(grade_required)
+Form::Form(std::string name, int grade) : _name(name), _grade(grade), _gradeRequired(42), _isSigned(0)
 {
 	try
 	{
@@ -91,7 +71,7 @@ Form::Form(std::string name, int grade, int grade_required) : _name(name), _grad
 	}
 	std::cout << "Form default contructor has been called" << std::endl;
 }
-Form::Form(int grade, int grade_required) : _name("Default"), _grade(grade), _gradeRequired(grade_required)
+Form::Form(std::string name, int grade, int grade_required) : _name(name), _grade(grade), _gradeRequired(grade_required), _isSigned(0)
 {
 	try
 	{
@@ -111,7 +91,27 @@ Form::Form(int grade, int grade_required) : _name("Default"), _grade(grade), _gr
 	}
 	std::cout << "Form default contructor has been called" << std::endl;
 }
-Form::Form(const Form &Form) : _name(Form._name), _grade(Form._grade), _gradeRequired(Form._gradeRequired)
+Form::Form(int grade, int grade_required) : _name("Default"), _grade(grade), _gradeRequired(grade_required), _isSigned(0)
+{
+	try
+	{
+		setGrade();
+	}
+	catch (GradeTooHighException &e)
+	{
+		std::cerr << "\033[31mCreating Bureaucrat " << getName() << " failed: " << e.what() << "\033[0m" << std::endl;
+	}
+	catch (GradeTooLowException &e)
+	{
+		std::cerr << "\033[31mCreating Bureaucrat " << getName() << " failed: " << e.what() << "\033[0m" << std::endl;
+	}
+	catch (...)
+	{
+		std::cerr << "\033[31mCreating Bureaucrat " << getName() << " failed: " << "Unkown exception" << "\033[0m" << std::endl;
+	}
+	std::cout << "Form default contructor has been called" << std::endl;
+}
+Form::Form(const Form &Form) : _name(Form._name), _grade(Form._grade), _gradeRequired(Form._gradeRequired), _isSigned(0)
 {
 	std::cout << "Form copy contructor has been called" << std::endl;
 }

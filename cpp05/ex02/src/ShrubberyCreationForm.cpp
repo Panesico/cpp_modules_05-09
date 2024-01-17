@@ -32,7 +32,7 @@ void	ShrubberyCreationForm::execute(const Bureaucrat &executor) const{
 	else
 	{
 		std::ofstream outfile ((this->getTarget() + "_shrubbery").c_str());
-		std::cout << "              v .   ._, |_  .,\n"
+		outfile << "              v .   ._, |_  .,\n"
 					 "           `-._\\/  .  \\ /    |/_\n"
 					 "               \\\\  _\\, y | \\//\n"
 					 "         _\\_.___\\\\, \\\\/ -.\\||\n"

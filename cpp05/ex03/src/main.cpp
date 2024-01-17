@@ -5,14 +5,14 @@
 #include "../include/ShrubberyCreationForm.hpp"
 #include "../include/Intern.hpp"
 
-void ft_leaks()
+/* void ft_leaks()
 {
 	system("leaks -q Intern");
 }
-
+ */
 int main(void)
 {
-	atexit(ft_leaks);
+	/* atexit(ft_leaks); */
 	{
 		std::cout << "\033[34mConstructing\033[0m" << std::endl;
 		Bureaucrat *a = new Bureaucrat();
