@@ -52,7 +52,7 @@ AForm::AForm(int grade) : _name("Default"), _isSigned(0), _grade(grade), _gradeR
 	}
 	std::cout << "Form grade contructor has been called" << std::endl;
 }
-AForm::AForm() : _name("Default"), _grade(42), _gradeRequired(42)
+AForm::AForm() : _name("Default"), _isSigned(0), _grade(42), _gradeRequired(42)
 {
 	std::cout << "Form default contructor has been called" << std::endl;
 }
@@ -116,11 +116,11 @@ AForm::AForm(int grade, int grade_required) : _name("Default"), _isSigned(0), _g
 	}
 	std::cout << "Form default contructor has been called" << std::endl;
 }
-AForm::AForm(const AForm &Form) : _name(Form._name), _grade(Form._grade), _gradeRequired(Form._gradeRequired)
+AForm::AForm(const AForm &Form) : _name(Form._name), _isSigned(0), _grade(Form._grade), _gradeRequired(Form._gradeRequired)
 {
 	std::cout << "Form copy contructor has been called" << std::endl;
 }
-AForm::AForm(std::string name) : _name(name), _grade(42), _gradeRequired(42)
+AForm::AForm(std::string name) : _name(name), _isSigned(0), _grade(42), _gradeRequired(42)
 {
 	std::cout << "Form name contructor has been called" << std::endl;
 }

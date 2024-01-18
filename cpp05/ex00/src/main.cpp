@@ -1,10 +1,10 @@
 #include <iostream>
 #include "../include/Bureaucrat.hpp"
 
-void ft_leaks()
+/* void ft_leaks()
 {
 	system("leaks -q Bureaucrat");
-}
+} */
 
 int main()
 {
