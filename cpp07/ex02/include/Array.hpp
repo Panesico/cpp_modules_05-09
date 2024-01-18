@@ -1,5 +1,7 @@
 #pragma once
 #include <iostream>
+#include <cstdlib>
+#include <cstring>
 
 template<typename T>
 class Array{
@@ -11,11 +13,13 @@ public:
 	{
 		_array = new T[64];
 		_size = 64;
+		std::memset(_array, 0, sizeof(T) * _size);
 	}
 	Array(unsigned int n)
 	{
 		_array = new T[n];
 		_size = n;
+		std::memset(_array, 0, sizeof(T) * _size);
 	}
 	Array(Array &copy)
 	{
@@ -39,7 +43,7 @@ public:
 		catch (OutOfBounds &e)
 		{
 			std::cout << e.what() << std::endl;
-			std::exit(1);
+			exit(1);
 		}
 	}
 	~Array() {delete[] _array;}
@@ -61,7 +65,7 @@ public:
 		catch (OutOfBounds &e)
 		{
 			std::cout << e.what() << std::endl;
-			std::exit(1);
+			exit(1);
 		}
 	}
 
