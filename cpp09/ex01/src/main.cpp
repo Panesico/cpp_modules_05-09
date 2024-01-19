@@ -8,7 +8,11 @@ int main(int argc, char* argv[]) {
 
 	RPN myRPN;
 	std::string rpnExpression = argv[1];
-	long result = myRPN.evaluateRPN(rpnExpression);
+	if (!myRPN.isValidRPN(rpnExpression)) {
+		std::cout << "Invalid RPN expression" << std::endl;
+		return 1;
+	}
+	long result = myRPN.calculateRPN(rpnExpression);
 
 	std::cout << "Result: " << result << std::endl;
 

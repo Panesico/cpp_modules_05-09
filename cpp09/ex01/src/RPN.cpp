@@ -1,75 +1,87 @@
 #include "../include/RPN.hpp"
 
-bool RPN::isOperator(char token) {
-	return token == '+' || token == '-' || token == '*' || token == '/';
+bool RPN::isValidRPN(const std::string& expression) {
+	std::stack<double> operandStack;
+    std::istringstream iss(expression);
+    std::string token;
+
+    while (iss >> token) {
+        if (isdigit(token[0]) || (token[0] == '-' && token.size() > 1)) {
+            operandStack.push(std::stod(token));
+        } else {
+            if (operandStack.size() < 2) {
+                return false;
+            }
+
+            double operand2 = operandStack.top();
+            operandStack.pop();
+            double operand1 = operandStack.top();
+            operandStack.pop();
+
+            if (token == "+") {
+                operandStack.push(operand1 + operand2);
+            } else if (token == "-") {
+                operandStack.push(operand1 - operand2);
+            } else if (token == "*") {
+                operandStack.push(operand1 * operand2);
+            } else if (token == "/") {
+                if (operand2 == 0) {
+                    return false;
+                }
+                operandStack.push(operand1 / operand2);
+            } else {
+                return false;
+            }
+        }
+    }
+
+    return operandStack.size() == 1;
 }
 
-bool RPN::isOperand(const std::string& token) {
-	try {
-		std::stod(token);
-		return true;
-	} catch (const std::invalid_argument&) {
-		return false;
-	} catch (const std::out_of_range&) {
-		return false;
-	}
+double RPN::calculateRPN(const std::string& expression) {
+    std::istringstream iss(expression);
+
+    std::string token;
+    while (iss >> token) {
+        if (isdigit(token[0]) || (token.length() > 1 && isdigit(token[1]))) {
+            // If the token is a number, push it onto the stack
+            _operandStack.push(atof(token.c_str()));
+        } else {
+            // If the token is an operator, pop operands from the stack, perform the operation, and push the result back
+            double operand2 = _operandStack.top();
+            _operandStack.pop();
+            double operand1 = _operandStack.top();
+            _operandStack.pop();
+
+            if (token == "+") {
+                _operandStack.push(operand1 + operand2);
+            } else if (token == "-") {
+                _operandStack.push(operand1 - operand2);
+            } else if (token == "*") {
+                _operandStack.push(operand1 * operand2);
+            } else if (token == "/") {
+                if (operand2 != 0) {
+                    _operandStack.push(operand1 / operand2);
+                } else {
+                    std::cerr << "Error: Division by zero." << std::endl;
+                    exit(1);
+                }
+            } else {
+                std::cerr << "Error: Unknown operator '" << token << "'" << std::endl;
+                exit(1);
+            }
+        }
+    }
+
+    if (_operandStack.size() == 1) {
+        // If there's only one value left on the stack, it's the final result
+        return _operandStack.top();
+    } else {
+        std::cerr << "Error: Invalid RPN expression." << std::endl;
+        exit(1);
+    }
 }
 
-bool RPN::isValidToken(const std::string& token) {
-	if (isOperator(token.at(0))) {
-		return token.size() == 1;
-	}
-
-	size_t pos;
-	std::stod(token, &pos);
-
-	return pos == token.size();
-}
-
-long RPN::performOperation(long operand1, long operand2, const std::string& op) {
-	if (op == "+") return operand1 + operand2;
-	if (op == "-") return operand1 - operand2;
-	if (op == "*") return operand1 * operand2;
-	if (op == "/") return operand1 / operand2;
-	return 0;
-}
-
-long RPN::evaluateRPN(const std::string& rpnExpression) {
-	std::stringstream ss(rpnExpression);
-	std::string token;
-
-	while (ss >> token) {
-		if (isValidToken(token)) {
-			if (isOperand(token)) {
-				_operandStack.push(std::stod(token));
-			} else if (isOperator(token.at(0))) {
-				if (_operandStack.size() < 2) {
-					std::cout << "Error: Insufficient operands for operator " << token << std::endl;
-					return 0;
-				}
-
-				double operand2 = _operandStack.top();
-				_operandStack.pop();
-
-				double operand1 = _operandStack.top();
-				_operandStack.pop();
-
-				double result = performOperation(operand1, operand2, token);
-				_operandStack.push(result);
-			}
-		} else {
-			std::cout << "Error: Invalid token in RPN expression: " << token << std::endl;
-			return 0;
-		}
-	}
-
-	if (_operandStack.size() == 1) {
-		return _operandStack.top();
-	} else {
-		std::cout << "Error: Too many operands in RPN expression" << std::endl;
-		return 0;
-	}
-}
 
 RPN::RPN()
 {

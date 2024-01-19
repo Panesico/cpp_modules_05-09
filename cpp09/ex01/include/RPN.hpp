@@ -1,8 +1,11 @@
 #pragma once
+
 #include <iostream>
-#include <stack>
 #include <sstream>
+#include <string>
 #include <stdexcept>
+#include <cstdlib>
+#include <stack>
 
 class RPN {
 private:
@@ -16,9 +19,6 @@ public:
 
 	~RPN();
 
-	bool isOperator(char token);
-	bool isOperand(const std::string& token);
-	bool isValidToken(const std::string& token);
-	long performOperation(long operand1, long operand2, const std::string& op);
-	long evaluateRPN(const std::string& rpnExpression);
+	double calculateRPN(const std::string& expression);
+	bool isValidRPN(const std::string& expression);
 };

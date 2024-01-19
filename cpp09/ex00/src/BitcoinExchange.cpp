@@ -114,14 +114,14 @@ void BitcoinExchange::getDate(std::string &line) {
 	}
 	if (it == myMultiMap.end())
 	{
-		long closestDate = std::numeric_limits<long>::max();
+		long closestDate = 9223372036854775807;
 		for (std::multimap<long, std::string>::iterator it = myMultiMap.begin(); it != myMultiMap.end(); ++it){
 			if (it->first > dateNum)
 				break ;
 			else
 				closestDate = it->first;
 		}
-		if (closestDate != std::numeric_limits<long>::max())
+		if (closestDate != 9223372036854775807)
 		{
 			for (std::multimap<long, std::string>::iterator it = myMultiMap.find(closestDate); it != myMultiMap.end() && it->first == closestDate; ++it) {
 				std::cout << formatDate(closestDate) << " | " << it->second << std::endl;
