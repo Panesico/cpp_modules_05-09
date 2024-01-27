@@ -1,85 +1,99 @@
 #include "../include/RPN.hpp"
 
-bool RPN::isValidRPN(const std::string& expression) {
-	std::stack<double> operandStack;
-    std::istringstream iss(expression);
-    std::string token;
+static int stod(const std::string& str) {
+    std::istringstream ss(str);
+    double result;
 
-    while (iss >> token) {
-        if (isdigit(token[0]) || (token[0] == '-' && token.size() > 1)) {
-            operandStack.push(std::stod(token));
-        } else {
-            if (operandStack.size() < 2) {
-                return false;
-            }
-
-            double operand2 = operandStack.top();
-            operandStack.pop();
-            double operand1 = operandStack.top();
-            operandStack.pop();
-
-            if (token == "+") {
-                operandStack.push(operand1 + operand2);
-            } else if (token == "-") {
-                operandStack.push(operand1 - operand2);
-            } else if (token == "*") {
-                operandStack.push(operand1 * operand2);
-            } else if (token == "/") {
-                if (operand2 == 0) {
-                    return false;
-                }
-                operandStack.push(operand1 / operand2);
-            } else {
-                return false;
-            }
-        }
+    // Check for conversion success
+    if (!(ss >> result) || !ss.eof()) {
+        throw std::invalid_argument("Invalid number: " + str);
     }
 
-    return operandStack.size() == 1;
+    return result;
 }
 
-double RPN::calculateRPN(const std::string& expression) {
-    std::istringstream iss(expression);
-
-    std::string token;
-    while (iss >> token) {
-        if (isdigit(token[0]) || (token.length() > 1 && isdigit(token[1]))) {
-            // If the token is a number, push it onto the stack
-            _operandStack.push(atof(token.c_str()));
-        } else {
-            // If the token is an operator, pop operands from the stack, perform the operation, and push the result back
-            double operand2 = _operandStack.top();
-            _operandStack.pop();
-            double operand1 = _operandStack.top();
-            _operandStack.pop();
-
-            if (token == "+") {
-                _operandStack.push(operand1 + operand2);
-            } else if (token == "-") {
-                _operandStack.push(operand1 - operand2);
-            } else if (token == "*") {
-                _operandStack.push(operand1 * operand2);
-            } else if (token == "/") {
-                if (operand2 != 0) {
-                    _operandStack.push(operand1 / operand2);
-                } else {
-                    std::cerr << "Error: Division by zero." << std::endl;
-                    exit(1);
-                }
-            } else {
-                std::cerr << "Error: Unknown operator '" << token << "'" << std::endl;
-                exit(1);
+static bool isValidDigit(const std::string& str) {
+    bool hasdot = false;
+    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
+        if (!isdigit(*it)) {
+            if (it == str.begin() && (*it == '-' || *it == '+'))
+            {
+                if (str.size() == 1)
+                    return false;
+                continue;
             }
+            if (it != str.begin() && *it == '.')
+            {
+                if (!hasdot)
+                {
+                    hasdot = true;
+                    continue;
+                }
+                else
+                    return false;
+            }
+            return false;
         }
     }
+    return true;
+}
 
-    if (_operandStack.size() == 1) {
-        // If there's only one value left on the stack, it's the final result
-        return _operandStack.top();
-    } else {
-        std::cerr << "Error: Invalid RPN expression." << std::endl;
-        exit(1);
-    }
+static bool isValidToken(const std::string& str) {
+    return (str == "+" || str == "-" || str == "*" || str == "/");
+}
+
+double RPN::calculateRPN(const std::string& str) {
+        std::stack<int> stk;
+        std::istringstream stream(str);
+        std::string token;
+        double result = 0;
+        bool firstIter = false;
+
+        while (!stream.eof()) {
+            stream >> token;
+
+            if (!isValidToken(token)) {
+                if (!isValidDigit(token)) {
+                    throw std::invalid_argument("Invalid RPN expression");
+                }
+                stk.push(stod(token));
+                continue;
+            }
+
+            if (stk.size() < 2 && !firstIter) {
+                throw std::invalid_argument("Invalid RPN expression");
+            }
+
+            if (stk.size() == 0 && firstIter) {
+                throw std::invalid_argument("Invalid RPN expression");
+            }
+        
+            while (stk.size() > 0) {
+                double num2 = stk.top();
+                stk.pop();
+                if (!firstIter)
+                {
+                    result = stk.top();
+                    stk.pop();
+                    firstIter = true;
+                }
+                
+                if (token == "+") {
+                    result = num2 + result;
+                } else if (token == "-") {
+                    result = num2 - result;
+                } else if (token == "*") {
+                    result = num2 * result;
+                } else {
+                    if (num2 == 0)
+                        throw std::invalid_argument("Invalid RPN expression");
+                    result = num2 / result;
+                }
+            }
+        }
+        if (stk.size() > 0)
+            throw std::invalid_argument("Invalid RPN expression");
+        return result;
 }
 
 
