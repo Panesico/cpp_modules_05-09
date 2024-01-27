@@ -1,82 +1,50 @@
 #include "../include/PmergeMe.hpp"
 
-PmergeMe::PmergeMe(int ac, char **av){
+void PmergeMe::binaryInsert(std::vector<double>& sortedSeq, double element) {
+    // Binary search to find the correct position to insert the element
+    std::vector<double>::iterator it = std::lower_bound(sortedSeq.begin(), sortedSeq.end(), element);
 
-	std::deque<int> inputDeque;
-	std::list<int> inputList;
-
-	srand(time(NULL));
-	for (int i = 1; i < ac; ++i)
-	{
-		int value = atoi(av[i]);
-		if (value <= 0)
-		{
-			std::cerr << "Error: Invalid input value \"" << av[i] << "\". Only positive integers are allowed." << std::endl;
-			std::exit(1);
-		}
-		inputDeque.push_back(value);
-		inputList.push_back(value);
-	}
-	std::cout << "Before: ";
-	display(inputDeque);
-
-	clock_t start1 = clock();
-	mergeInsertSortDeque(inputDeque);
-	clock_t end1 = clock();
-	double time1 = static_cast<double>(end1 - start1) / CLOCKS_PER_SEC * 1000;
-
-	clock_t start2 = clock();
-	mergeInsertSortList(inputList);
-	clock_t end2 = clock();
-	double time2 = static_cast<double>(end2 - start2) / CLOCKS_PER_SEC * 1000;
-
-	std::cout << "After: ";
-	display(inputDeque);
-	std::cout << "Time to process a range of " << inputDeque.size() << " elements with std::deque container: " << time1 << " us" << std::endl;
-	std::cout << "Time to process a range of " << inputList.size() << " elements with std::list container: " << time2 << " us" << std::endl;
-	if (inputDeque == std::deque<int>(inputList.begin(), inputList.end()))
-		std::cout << "The sorted sequences are equal." << std::endl;
-	else
-		std::cout << "The sorted sequences are not equal." << std::endl;
+    // Insert the element at the found position
+    sortedSeq.insert(it, element);
 }
 
-template <typename T>
-void PmergeMe::display(const T& container)
-{
-	typename T::const_iterator it;
-	for (it = container.begin(); it != container.end(); ++it)
-		std::cout << *it << " ";
-	std::cout << std::endl;
+void PmergeMe::specialInsert(std::vector<double>& sortedSeq, const std::vector<double>& remainingElements) {
+    // Insert the element that was paired with the first and smallest element of sortedSeq
+    sortedSeq.insert(sortedSeq.begin(), remainingElements[0]);
+
+    // Insert the remaining elements using binary search for each insertion
+    for (size_t i = 1; i < remainingElements.size(); ++i) {
+        binaryInsert(sortedSeq, remainingElements[i]);
+    }
 }
 
-void PmergeMe::mergeInsertSortDeque(std::deque<int>& arr)
-{
-	std::deque<int>::iterator it1, it2;
-	for (it1 = arr.begin() + 1; it1 != arr.end(); ++it1)
-	{
-		int temp = *it1;
-		it2 = it1;
-		while (it2 != arr.begin() && *(std::prev(it2)) > temp)
-		{
-			*it2 = *(std::prev(it2));
-			std::advance(it2, -1);
-		}
-		*it2 = temp;
-	}
-}
+std::list<double> PmergeMe::merge(std::vector<double>& X) {
+    size_t n = X.size();
 
-void PmergeMe::mergeInsertSortList(std::list<int>& arr)
-{
-	std::list<int>::iterator it1, it2;
-	for (it1 = ++arr.begin(); it1 != arr.end(); ++it1)
-	{
-		int temp = *it1;
-		it2 = it1;
-		while (it2 != arr.begin() && *(std::prev(it2)) > temp)
-		{
-			*it2 = *(std::prev(it2));
-			std::advance(it2, -1);
-		}
-		*it2 = temp;
-	}
+    if (n <= 1) {
+        // Base case: already sorted
+        return std::list<double>(X.begin(), X.end());
+    }
+
+    // Step 1: Pair elements and determine larger element in each pair
+	std::vector<double> largerElements;
+    for (size_t i = 0; i < n - 1; i += 2) {
+        double larger = std::max(X[i], X[i + 1]);
+        largerElements.push_back(larger);
+    }
+
+    // Step 2: Recursively sort the larger elements
+    merge(largerElements);
+
+    // Step 3: Insert at the start of S the element that was paired with the first and smallest element of S
+    std::vector<double> sortedSeq;
+    sortedSeq.push_back(X.front());
+
+    // Step 4: Insert the remaining elements using specialInsert
+    std::vector<double> remainingElements(X.begin() + 1, X.end());
+    specialInsert(sortedSeq, remainingElements);
+
+    // copy the vector sortedSeq back to an std::list
+
+	return std::list<double>(sortedSeq.begin(), sortedSeq.end());
 }
