@@ -1,6 +1,6 @@
 #include "../include/RPN.hpp"
 
-static int stod(const std::string& str) {
+static double stod(const std::string& str) {
     std::istringstream ss(str);
     double result;
 
@@ -43,7 +43,7 @@ static bool isValidToken(const std::string& str) {
 }
 
 double RPN::calculateRPN(const std::string& str) {
-        std::stack<int> stk;
+        std::stack<double> stk;
         std::istringstream stream(str);
         std::string token;
         double result = 0;
@@ -79,15 +79,15 @@ double RPN::calculateRPN(const std::string& str) {
                 }
                 
                 if (token == "+") {
-                    result = num2 + result;
+                    result = result + num2;
                 } else if (token == "-") {
-                    result = num2 - result;
+                    result = result - num2;
                 } else if (token == "*") {
-                    result = num2 * result;
+                    result = result * num2;
                 } else {
                     if (num2 == 0)
                         throw std::invalid_argument("Invalid RPN expression");
-                    result = num2 / result;
+                    result = result / num2;
                 }
             }
         }
@@ -99,7 +99,6 @@ double RPN::calculateRPN(const std::string& str) {
 
 RPN::RPN()
 {
-	std::cout << "Calling RPN constructor" << std::endl;
 }
 
 RPN::RPN(RPN &copy)
@@ -122,5 +121,4 @@ RPN &RPN::operator=(RPN &copy)
 
 RPN::~RPN()
 {
-	std::cout << "Calling RPN destructor" << std::endl;
 }
