@@ -2,7 +2,7 @@ NAME		=	btc
 
 CXX			=	c++
 
-CXXFLAGS	=	-Wall -Werror -Wextra -std=c++98 -pedantic-errors
+CXXFLAGS	=	-Wall -Werror -Wextra -std=c++98 -g -pedantic-errors
 
 #directories
 SRC_DIR					=	src/

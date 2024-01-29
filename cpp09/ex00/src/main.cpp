@@ -18,13 +18,13 @@ int main(int argc, char **argv) {
 		std::cout << "File format isn't correct." << std::endl;
 		return (-1);
 	}
-	BitcoinExchange *myBit = new BitcoinExchange();
+	BitcoinExchange myBit;
 	while (getline(file, line))
 	{
-		myBit->getExchange(line);
+		myBit.getExchange(line);
 	}
 	std::string myInput;
 	std::cout << "Search for a date: ";
 	getline(std::cin, myInput);
-	myBit->getDate(myInput);
+	myBit.getDate(myInput);
 }

@@ -26,6 +26,7 @@ public:
 	~BitcoinExchange();
 
 	std::multimap<long, std::string> &getMap();
+	void getDatabase(std::string &line);
 	void getExchange(std::string &line);
 	void getDate(std::string &line);
 	bool isLeapYear(int year);

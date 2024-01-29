@@ -28,7 +28,7 @@ BitcoinExchange::~BitcoinExchange()
 	std::cout << "Calling BitcoinExchange destructor" << std::endl;
 }
 
-void BitcoinExchange::getExchange(std::string &line) {
+void BitcoinExchange::getDatabase(std::string &line) {
 	size_t separatorPos;
 	size_t separatorPos2;
 	static std::string before;
@@ -112,6 +112,10 @@ void BitcoinExchange::getDate(std::string &line) {
 	for (; it != myMultiMap.end() && it->first == dateNum; ++it) {
 		std::cout << formatDate(it->first) << " | " << it->second << std::endl;
 	}
+	if (myMultiMap.empty()){
+		std::cerr << "No dates provided in database" << std::endl;
+		std::exit(-1);
+	}
 	if (it == myMultiMap.end())
 	{
 		long closestDate = 9223372036854775807;
@@ -130,9 +134,13 @@ void BitcoinExchange::getDate(std::string &line) {
 		else {
 			std::multimap<long, std::string>::iterator it = myMultiMap.begin();
 				std::cout << formatDate(it->first) << " | " << it->second << std::endl;
-			}
 		}
 	}
+}
+
+void BitcoinExchange::getExchange(std::string &line){
+	
+}
 
 bool BitcoinExchange::isLeapYear(int year) {
 	return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
