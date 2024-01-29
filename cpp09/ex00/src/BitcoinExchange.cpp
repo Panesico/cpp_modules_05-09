@@ -28,6 +28,26 @@ BitcoinExchange::~BitcoinExchange()
 	std::cout << "Calling BitcoinExchange destructor" << std::endl;
 }
 
+std::multimap<long, std::string> &BitcoinExchange::getDataMap() {
+	return myMultiMap;
+}
+
+std::multimap<long, std::string> &BitcoinExchange::getExchangeMap() {
+	return exchange;
+}
+
+static float stof(const std::string& str) {
+    std::istringstream ss(str);
+    float result;
+
+    // Check for conversion success
+    if (!(ss >> result) || !ss.eof()) {
+        throw std::invalid_argument("Invalid number: " + str);
+    }
+
+    return result;
+}
+
 void BitcoinExchange::getDatabase(std::string &line) {
 	size_t separatorPos;
 	size_t separatorPos2;
@@ -42,8 +62,7 @@ void BitcoinExchange::getDatabase(std::string &line) {
 	separatorPos = line.find(',');
 	if (separatorPos >= line.length())
 	{
-		std::cerr << "CSV syntax error!" << std::endl;
-		std::exit(-1);
+		std::cout << "CSV syntax error!" << std::endl;
 	}
 	if (!separatorPos)
 	{
@@ -55,12 +74,10 @@ void BitcoinExchange::getDatabase(std::string &line) {
 
 	if (parseDate(*myDate, parsedDate)) {
 		if (!isValidDate(parsedDate)) {
-			std::cerr << "Invalid date." << std::endl;
-			std::exit(-1);
+			std::cout << "Invalid date." << std::endl;
 		}
 	} else {
-		std::cerr << "Error parsing date." << std::endl;
-		std::exit(-1);
+		std::cout << "Error parsing date." << std::endl;
 	}
 	separatorPos2 = line.find('.');
 	if (separatorPos2 >= line.length())
@@ -93,53 +110,128 @@ void BitcoinExchange::getDatabase(std::string &line) {
 	before = line;
 }
 
-void BitcoinExchange::getDate(std::string &line) {
+void BitcoinExchange::getDate() {
 	long dateNum = 0;
 
 	Date parsedDate;
+	std::string line;
 
-	if (parseDate(line, parsedDate)) {
-		if (!isValidDate(parsedDate)) {
-			std::cerr << "Invalid date." << std::endl;
-			std::exit(-1);
-		}
-	} else {
-		std::cerr << "Error parsing date." << std::endl;
-		std::exit(-1);
-	}
-	dateNum = convertDateToInt(line);
-	std::multimap<long, std::string>::iterator it = myMultiMap.find(dateNum);
-	for (; it != myMultiMap.end() && it->first == dateNum; ++it) {
-		std::cout << formatDate(it->first) << " | " << it->second << std::endl;
-	}
-	if (myMultiMap.empty()){
-		std::cerr << "No dates provided in database" << std::endl;
-		std::exit(-1);
-	}
-	if (it == myMultiMap.end())
-	{
-		long closestDate = 9223372036854775807;
-		for (std::multimap<long, std::string>::iterator it = myMultiMap.begin(); it != myMultiMap.end(); ++it){
-			if (it->first > dateNum)
-				break ;
-			else
-				closestDate = it->first;
-		}
-		if (closestDate != 9223372036854775807)
-		{
-			for (std::multimap<long, std::string>::iterator it = myMultiMap.find(closestDate); it != myMultiMap.end() && it->first == closestDate; ++it) {
-				std::cout << formatDate(closestDate) << " | " << it->second << std::endl;
+	for (std::multimap<long, std::string>::iterator iter = exchange.begin(); iter != exchange.end(); ++iter) {
+		line = formatDate(iter->first);
+		if (parseDate(line, parsedDate)) {
+			if (!isValidDate(parsedDate)) {
+				std::cout << "Invalid date." << std::endl;
 			}
+		} else {
+			std::cout << "Error parsing date." << std::endl;
 		}
-		else {
-			std::multimap<long, std::string>::iterator it = myMultiMap.begin();
+		if (parseDate(line, parsedDate)) {
+			if (!isValidDate(parsedDate)) {
+				std::cout << "Invalid date!!" << std::endl;
+			}
+		} else {
+			std::cout << "Error parsing date!!!!" << std::endl;
+		}
+		dateNum = convertDateToInt(line);
+		std::multimap<long, std::string>::iterator it = myMultiMap.find(dateNum);
+ 		for (; it != myMultiMap.end() && it->first == dateNum; ++it) {
 				std::cout << formatDate(it->first) << " | " << it->second << std::endl;
 		}
+
+		/* if (myMultiMap.empty()){
+			std::cout << "No dates provided in database" << std::endl;
+		} */
+		if (it == myMultiMap.end())
+		{
+			long closestDate = 9223372036854775807;
+			for (std::multimap<long, std::string>::iterator it = myMultiMap.begin(); it != myMultiMap.end(); ++it){
+				if (it->first > dateNum)
+					break ;
+				else
+					closestDate = it->first;
+			}
+			try
+			{
+				stof(iter->second);
+						if (closestDate != 9223372036854775807)
+			{
+				for (std::multimap<long, std::string>::iterator it = myMultiMap.find(closestDate); it != myMultiMap.end() && it->first == closestDate; ++it) {
+					std::cout << formatDate(closestDate) << " | " << stof(it->second) * stof(iter->second) << std::endl;
+				}
+			}
+			else {
+				std::multimap<long, std::string>::iterator it = myMultiMap.begin();
+					std::cout << formatDate(it->first) << " | " << stof(it->second) * stof(iter->second) << std::endl;
+			}
+			}
+			catch(const std::exception& e)
+			{
+				std::cout << e.what() << '\n';
+				
+			}
+		}
 	}
+
 }
 
 void BitcoinExchange::getExchange(std::string &line){
-	
+	size_t separatorPos;
+	size_t separatorPos2;
+	static std::string before;
+	bool myBool = 1;
+	long dateNum = 0;
+	Date parsedDate;
+	std::string *myDate;
+
+	if (line.empty())
+		return ;
+	separatorPos = line.find('|');
+	if (separatorPos >= line.length())
+	{
+		std::cout << "CSV syntax error!" << std::endl;
+	}
+	if (!separatorPos)
+	{
+		myBool = 0;
+		myDate = &before;
+	}
+	else
+		myDate = &line;
+
+	if (parseDate(*myDate, parsedDate)) {
+		if (!isValidDate(parsedDate)) {
+			std::cout << "Invalid date." << std::endl;
+		}
+	} else {
+		std::cout << "Error parsing date!" << std::endl;
+	}
+	separatorPos2 = line.find('.');
+	if (separatorPos2 >= line.length())
+		separatorPos2 = line.length();
+	if (myBool) {
+		dateNum = convertDateToInt(line.substr(0, line.find('|')));
+		try{
+			exchange.insert(std::make_pair(dateNum, line.substr(separatorPos + 1, separatorPos2)));
+		}
+		catch (std::exception &e)
+		{
+			std::cout << myBool << std::endl;
+			std::cout << "\033[31merror:\033[0m " << e.what() << std::endl;
+			std::cout << "exiting..." << std::endl;
+		}
+	}
+	else {
+		dateNum = convertDateToInt(before.substr(0, before.find('|')));
+		try {
+			exchange.insert(std::make_pair(dateNum, line.substr(separatorPos + 1, separatorPos2)));
+		}
+		catch (std::exception &e) {
+			std::cout << myBool << std::endl;
+			std::cout << "\033[31merror:\033[0m " << e.what() << std::endl;
+			std::cout << "exiting..." << std::endl;
+		}
+	}
+	before = line;
 }
 
 bool BitcoinExchange::isLeapYear(int year) {
